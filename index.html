@@ -5836,7 +5836,7 @@ His philosophy is simple: "Great brands aren't built on luck. They're built on s
 
 
 <!-- CONTACT -->
-// Contact form handling<section id="contact" class="contact scroll-animate">
+<section id="contact" class="contact scroll-animate">
 <h2 class="contact-heading-main">Ready to Build a Market-Leading Brand?</h2>
 <p class="contact-typo" aria-live="polite" aria-label="Animated contact statement">
   <span id="contactTypoText" class="contact-typo-text">Let's architect your growth roadmap.</span><span class="contact-typo-cursor" aria-hidden="true">_</span>
@@ -5846,7 +5846,7 @@ Let's design your next phase of growth&mdash;with clarity, confidence, and consi
 </p>
 
 <div class="form-container">
-<form id="contactForm" name="contact" method="POST" data-netlify="true"></form>
+<form id=<form id="contactForm" name="contact" method="POST" data-netlify="true"></form>
 <div class="form-row">
 <div class="form-group">
 <label for="firstName">First Name *</label>
@@ -6233,86 +6233,56 @@ if ('IntersectionObserver' in window) {
 })();
 
 // Contact form handling
-// Contact form handling
 const contactFormEl = document.getElementById('contactForm');
-
 if (contactFormEl) {
-    contactFormEl.addEventListener('submit', async function(e) {
-        e.preventDefault();
+contactFormEl.addEventListener('submit', function(e) {
+e.preventDefault();
 
-        const formMessage = document.getElementById('formMessage');
+const formData = {
+firstName: document.getElementById('firstName').value,
+lastName: document.getElementById('lastName').value,
+email: document.getElementById('email').value,
+phone: document.getElementById('phone').value,
+company: document.getElementById('company').value,
+service: document.getElementById('service').value,
+message: document.getElementById('message').value,
+budget: document.getElementById('budget').value
+};
 
-        // Get form data
-        const formData = new FormData(this);
+const messageDiv = document.getElementById('formMessage');
 
-        // Make sure Netlify knows which form this is
-        if (!formData.get('form-name')) {
-            formData.append('form-name', 'contact');
-        }
-
-        // Basic validation
-        const firstName = formData.get('firstName');
-        const lastName = formData.get('lastName');
-        const email = formData.get('email');
-        const company = formData.get('company');
-        const service = formData.get('service');
-        const message = formData.get('message');
-
-        if (!firstName || !lastName || !email || !company || !service || !message) {
-            formMessage.textContent = 'Please fill in all required fields.';
-            formMessage.className = 'form-message error';
-            formMessage.style.display = 'block';
-            return;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailRegex.test(email)) {
-            formMessage.textContent = 'Please enter a valid email address.';
-            formMessage.className = 'form-message error';
-            formMessage.style.display = 'block';
-            return;
-        }
-
-        try {
-            // Send form to Netlify
-            const response = await fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams(formData).toString()
-            });
-
-            if (!response.ok) {
-                throw new Error('Form submission failed');
-            }
-
-            console.log('Form successfully submitted');
-
-            // Show success message
-            formMessage.textContent = "Thank you! We've received your message. We'll get back to you within 24 hours.";
-            formMessage.className = 'form-message success';
-            formMessage.style.display = 'block';
-
-            // Reset form
-            this.reset();
-
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                formMessage.style.display = 'none';
-            }, 5000);
-
-        } catch (error) {
-            console.error('Form submission error:', error);
-
-            formMessage.textContent = 'Something went wrong. Please try again or contact us directly.';
-            formMessage.className = 'form-message error';
-            formMessage.style.display = 'block';
-        }
-    });
+// Basic validation
+if (!formData.firstName || !formData.lastName || !formData.email || !formData.company || !formData.service || !formData.message) {
+messageDiv.textContent = 'Please fill in all required fields.';
+messageDiv.className = 'form-message error';
+messageDiv.style.display = 'block';
+return;
 }
+
+// Email validation
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(formData.email)) {
+messageDiv.textContent = 'Please enter a valid email address.';
+messageDiv.className = 'form-message error';
+messageDiv.style.display = 'block';
+return;
+}
+
+console.log('Form submitted:', formData);
+
+// Show success message
+messageDiv.textContent = 'Thank you! We\'ve received your message. We\'ll get back to you within 24 hours.';
+messageDiv.className = 'form-message success';
+messageDiv.style.display = 'block';
+
+// Reset form
+this.reset();
+
+// Hide message after 5 seconds
+setTimeout(() => {
+messageDiv.style.display = 'none';
+}, 5000);
+});
 }
 
 // Mobile menu toggle & smooth scrolling (header offset aware)
